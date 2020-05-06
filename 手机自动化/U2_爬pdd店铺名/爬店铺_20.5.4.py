@@ -6,10 +6,6 @@ from time import sleep
 import ast
 '''
 python -m weditor
-2.0: 
-一个关键词爬完后不重启, 点击搜索框搜索并爬取下一个关键词
-(运行大约一天会触发安全监测(不过检测无法搜索关键词):滑块/按要求找图)
-3.0: 
 两次关键词爬取间隔时间60-70s
 添加重启: 一个关键词爬完后重启pdd, 点击搜索框搜索并爬取下一个关键词
 '''
@@ -78,23 +74,23 @@ def get_shop_names():
 
 # 主函数>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # d = u2.connect("0123456789ABCDEF")
-# d = u2.connect("http://127.0.0.0")
+# d = u2.connect("http://0.0.0.0")
 d = u2.connect("127.0.0.1:5555")
 d.implicitly_wait(1)  # 隐式等待9s
 
 Keyword,id = get_Keyword()
 d.app_start("com.xunmeng.pinduoduo")
-sleep(2)
+sleep(60)
 # 循环>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 while True:
+
     # 获取商铺名节点
     shop_names =  get_shop_names()
     for shop_name in shop_names:
         # 上传商铺名
         post_shop(shop_name)
-    sleep(1)
     # 滑动
-    d.swipe(521, 1833, 521, 218, 1);sleep(1)
+    d.swipe(521, 1900, 521, 50, 0.5);sleep(0.5)
     if (d(text="已显示完所有搜索结果").exists()):
         post_Keyword(id)
         sleep(1)
